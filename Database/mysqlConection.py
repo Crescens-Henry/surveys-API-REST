@@ -1,8 +1,10 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, Enum
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import os
 from dotenv import load_dotenv
+
+from User.Domain.Entities.UserType import UserType
 
 Base = declarative_base()
 class UserModel(Base):
@@ -15,6 +17,7 @@ class UserModel(Base):
     email = Column(String(120), unique=True, nullable=False)
     password = Column(String(120), nullable=False)
     user_uuid = Column(String(36), unique=True)
+    type = Column(Enum(UserType))
     
     def to_dict(self):
         return {

@@ -1,6 +1,6 @@
 from User.Domain.Entities.User import User as UserDomain
 
-class SignInUseCase:
+class SignUpUseCase:
     def __init__(self, repository):
         self.repository = repository
 

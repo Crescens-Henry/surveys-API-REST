@@ -1,8 +1,5 @@
 from Database.mysqlConection import DBConnection, UserModel
 from User.Domain.Entities.User import User as UserDomain
-from User.Domain.Entities.Contact import Contact
-from User.Domain.Entities.Credentials import Credentials
-
 class Repositorio:
     def __init__(self):
         self.connection = DBConnection()
@@ -16,6 +13,7 @@ class Repositorio:
             email=usuario_dominio.credentials.email,
             password=usuario_dominio.credentials.password,
             user_uuid=usuario_dominio.user_uuid,
+            type=usuario_dominio.type.name
         )
         self.session.add(user)
         self.session.commit()
@@ -43,6 +41,7 @@ class Repositorio:
         user.phone = user_data['phone']
         user.email = user_data['email']
         user.password = user_data['password']
+        user.type = user_data['type']
         self.session.commit()
         return user
     
