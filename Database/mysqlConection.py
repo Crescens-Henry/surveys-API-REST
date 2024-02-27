@@ -16,7 +16,16 @@ class UserModel(Base):
     password = Column(String(120), nullable=False)
     user_uuid = Column(String(36), unique=True)
     
-    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'last_name': self.last_name,
+            'phone': self.phone,
+            'email': self.email,
+            'password': self.password,
+            'user_uuid': self.user_uuid
+        }
 class DBConnection:
     def __init__(self):
         load_dotenv()

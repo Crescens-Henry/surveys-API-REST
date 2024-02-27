@@ -9,7 +9,7 @@ class Repositorio:
         self.session = self.connection.Session()
 
     def save(self, usuario_dominio: UserDomain):
-        usuario = UserModel(
+        user = UserModel(
             name=usuario_dominio.contact.name,
             last_name=usuario_dominio.contact.last_name,
             phone=str(usuario_dominio.contact.phone),
@@ -17,14 +17,37 @@ class Repositorio:
             password=usuario_dominio.credentials.password,
             user_uuid=usuario_dominio.user_uuid,
         )
-        self.session.add(usuario)
+        self.session.add(user)
         self.session.commit()
-        return usuario
+        return user
 
+    def getAll(self):
+        user = self.session.query(UserModel).all()
+        return user
+    
+    def get_by_id(self, id):
+        return self.session.query(UserModel).filter(UserModel.id == id).first()
+    
     def getByEmail(self, email):
-        usuario = self.session.query(UserModel).filter_by(email=email).first()
-        return usuario
+        user = self.session.query(UserModel).filter_by(email=email).first()
+        return user
     
     def getByUuid(self, user_uuid):
-        usuario = self.session.query(UserModel).filter_by(user_uuid=user_uuid).first()
-        return usuario
+        user = self.session.query(UserModel).filter_by(user_uuid=user_uuid).first()
+        return user
+    
+    def update(self, id, user_data):
+        user = self.get_by_id(id)
+        user.name = user_data['name']
+        user.last_name = user_data['last_name']
+        user.phone = user_data['phone']
+        user.email = user_data['email']
+        user.password = user_data['password']
+        self.session.commit()
+        return user
+    
+    def delete(self, id):
+        user = self.get_by_id(id)
+        self.session.delete(user)
+        self.session.commit()
+        return user
