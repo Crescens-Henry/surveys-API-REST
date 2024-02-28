@@ -8,5 +8,8 @@ def initialize_endpoints(repository):
 
     @get_Award_blueprint.route('/<int:id>', methods=['GET'])
     def get_award(id):
-        award = getAwardUseCase.execute(id)
-        return jsonify(award.to_dict()), 200
+        try:
+            award = getAwardUseCase.execute(id)
+            return jsonify(award.to_dict()), 200
+        except Exception as e:
+            return jsonify({"message": "Error getting award", "error": str(e)}), 400
