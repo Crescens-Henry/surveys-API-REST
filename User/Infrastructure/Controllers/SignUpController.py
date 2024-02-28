@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from User.Application.SignUpUseCase import SignUpUseCase
-from User.Domain.Entities.User import User
+from User.Domain.Entities.AUser import User
 from User.Domain.Entities.Contact import Contact
 from User.Domain.Entities.Credentials import Credentials
 from User.Domain.Entities.UserType import UserType

@@ -1,5 +1,5 @@
 from Database.mysqlConection import DBConnection, UserModel
-from User.Domain.Entities.User import User as UserDomain
+from User.Domain.Entities.AUser import User as UserDomain
 class Repositorio:
     def __init__(self):
         self.connection = DBConnection()
