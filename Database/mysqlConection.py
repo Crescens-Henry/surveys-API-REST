@@ -31,6 +31,7 @@ class UserModel(Base):
             'user_uuid': self.user_uuid
         }
 
+<<<<<<< HEAD
 class SurveyModel(Base):
     __tablename__ = 'surveys'
 
@@ -41,6 +42,23 @@ class SurveyModel(Base):
             'id': self.id,
             'titulo': self.titulo,
             'survey_uuid': self.survey_uuid
+=======
+
+class AwardModel(Base):
+    __tablename__ = 'awards'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    description = Column(String(255), nullable=False)
+    award_uuid = Column(String(36), unique=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'award_uuid': self.award_uuid
+>>>>>>> 5255b5df65a73339ed9d0631fff44efa1aeda549
         }
 
 

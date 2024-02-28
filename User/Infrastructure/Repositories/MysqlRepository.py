@@ -1,20 +1,25 @@
 from Database.mysqlConection import DBConnection, UserModel
+<<<<<<< HEAD
 from User.Domain.Entities.AUser import User as UserDomain
 
 class Repositorio:
+=======
+from User.Domain.Entities.AUser import AUser as UserDomain
+class Repository:
+>>>>>>> 5255b5df65a73339ed9d0631fff44efa1aeda549
     def __init__(self):
         self.connection = DBConnection()
         self.session = self.connection.Session()
 
-    def save(self, usuario_dominio: UserDomain):
+    def save(self, user_domain: UserDomain):
         user = UserModel(
-            name=usuario_dominio.contact.name,
-            last_name=usuario_dominio.contact.last_name,
-            phone=str(usuario_dominio.contact.phone),
-            email=usuario_dominio.credentials.email,
-            password=usuario_dominio.credentials.password,
-            user_uuid=usuario_dominio.user_uuid,
-            type=usuario_dominio.type.name
+            name=user_domain.contact.name,
+            last_name=user_domain.contact.last_name,
+            phone=str(user_domain.contact.phone),
+            email=user_domain.credentials.email,
+            password=user_domain.credentials.password,
+            user_uuid=user_domain.user_uuid,
+            type=user_domain.type.name
         )
         self.session.add(user)
         self.session.commit()

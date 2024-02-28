@@ -9,3 +9,5 @@ class UpdateUserUseCase:
         else:
             updated_user = self.repositorio.update(id, user_data)
             return updated_user
+        
+        #!aqui se deberia de volver a encriptar la contraseña
