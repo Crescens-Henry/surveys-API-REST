@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from User.Domain.Entities.UserType import UserType
 from .Contact import Contact
@@ -7,7 +7,7 @@ import uuid
 
 @dataclass
 class AUser:
-    user_uuid = str(uuid.uuid4())
+    user_uuid :str = field(default_factory=uuid.uuid4, init=False)
     contact: Contact
     credentials: Credentials
     type: UserType
