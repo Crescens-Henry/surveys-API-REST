@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from User.Domain.Entities.UserType import UserType
 
 Base = declarative_base()
+
 class UserModel(Base):
     __tablename__ = 'users'
 
@@ -29,6 +30,20 @@ class UserModel(Base):
             'password': self.password,
             'user_uuid': self.user_uuid
         }
+
+class SurveyModel(Base):
+    __tablename__ = 'surveys'
+
+    id = Column(Integer, primary_key=True)
+    titulo = Column(String(50), nullable=False)
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'titulo': self.titulo,
+            'survey_uuid': self.survey_uuid
+        }
+
+
 class DBConnection:
     def __init__(self):
         load_dotenv()

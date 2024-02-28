@@ -1,5 +1,6 @@
 from User.Domain.Entities.AUser import User as UserDomain
 from User.Infrastructure.security.utils import get_hashed_password
+
 class SignUpUseCase:
     def __init__(self, repository):
         self.repository = repository
