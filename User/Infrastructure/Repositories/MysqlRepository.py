@@ -1,67 +1,52 @@
-from Database.mysqlConection import DBConnection, User
-from User.Domain.Entities.User import User as UserDomain
-from User.Domain.Entities.Contact import Contact
-from User.Domain.Entities.Credentials import Credentials
-
-class Repositorio:
+from Database.mysqlConection import DBConnection, UserModel
+from User.Domain.Entities.AUser import AUser as UserDomain
+class Repository:
     def __init__(self):
         self.connection = DBConnection()
         self.session = self.connection.Session()
 
-    def guardar(self, usuario_dominio: UserDomain):
-        usuario = User(
-            name=usuario_dominio.contact.name,
-            last_name=usuario_dominio.contact.last_name,
-            phone=str(usuario_dominio.contact.phone),
-            email=usuario_dominio.credentials.email,
-            password=usuario_dominio.credentials.password,
-            user_uuid=usuario_dominio.user_uuid,
+    def save(self, user_domain: UserDomain):
+        user = UserModel(
+            name=user_domain.contact.name,
+            last_name=user_domain.contact.last_name,
+            phone=str(user_domain.contact.phone),
+            email=user_domain.credentials.email,
+            password=user_domain.credentials.password,
+            user_uuid=user_domain.user_uuid,
+            type=user_domain.type.name
         )
-        self.session.add(usuario)
+        self.session.add(user)
         self.session.commit()
-        return usuario
+        return user
 
-    def obtener_todos(self):
-        return self.session.query(User).all()
-
-    def obtener(self, user_id: str):
-        usuario = self.session.query(User).get(user_id)
-        return usuario
-
-    def actualizar(self, user_id: str, contact: Contact, credentials: Credentials):
-        usuario = self.session.query(User).get(user_id)
-        if usuario:
-            usuario.name = contact.name
-            usuario.last_name = contact.last_name
-            usuario.phone = str(contact.phone)
-            usuario.email = credentials.email
-            usuario.password = credentials.password
-            self.session.commit()
-            self.session.refresh(usuario)
-        return usuario
-
-    def eliminar(self, user_id: str):
-        usuario = self.session.query(User).get(user_id)
-        if usuario:
-            self.session.delete(usuario)
-            self.session.commit()
-            return True
-        return False
-
-    def obtener_por_email(self, email):
-        usuario = self.session.query(User).filter_by(email=email).first()
-        return usuario
+    def getAll(self):
+        user = self.session.query(UserModel).all()
+        return user
     
-    def obtener_por_uuid(self, user_uuid):
-        usuario = self.session.query(User).filter_by(user_uuid=user_uuid).first()
-        return usuario
-
-    def verificar_usuario(self, user_uuid):
-        try:
-            usuario = self.session.query(User).filter_by(user_uuid=user_uuid).one()
-            self.session.query(User).filter_by(id=usuario.id).update({User.verified: True})
-            self.session.commit()
-            return usuario
-        except:
-            print ("Error")
-            return None
+    def get_by_id(self, id):
+        return self.session.query(UserModel).filter(UserModel.id == id).first()
+    
+    def getByEmail(self, email):
+        user = self.session.query(UserModel).filter_by(email=email).first()
+        return user
+    
+    def getByUuid(self, user_uuid):
+        user = self.session.query(UserModel).filter_by(user_uuid=user_uuid).first()
+        return user
+    
+    def update(self, id, user_data):
+        user = self.get_by_id(id)
+        user.name = user_data['name']
+        user.last_name = user_data['last_name']
+        user.phone = user_data['phone']
+        user.email = user_data['email']
+        user.password = user_data['password']
+        user.type = user_data['type']
+        self.session.commit()
+        return user
+    
+    def delete(self, id):
+        user = self.get_by_id(id)
+        self.session.delete(user)
+        self.session.commit()
+        return user

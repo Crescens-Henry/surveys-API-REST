@@ -1,12 +1,14 @@
-from User.Domain.Entities.User import User as UserDomain
+from User.Infrastructure.security.utils import verify_password, create_access_token
 
 class SignInUseCase:
     def __init__(self, repository):
-        self.repository = repository
-
-    def execute(self, user: UserDomain):
-        user_exist = self.repository.obtener_por_email(user.credentials.email)
-        if user_exist is not None:
-            return False, {"error": "El correo electrónico ya está en uso."}
-        self.repository.guardar(user)
-        return True
+        self.repositorio = repository
+    
+    def execute(self, email, password):
+        user = self.repositorio.getByEmail(email)
+        if user is None:
+            return None
+        if not verify_password(password, user.password):
+            return None
+        access_token = create_access_token(subject=user.email)
+        return access_token
