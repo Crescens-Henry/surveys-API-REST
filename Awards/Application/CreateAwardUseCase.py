@@ -7,7 +7,7 @@ class CreateAwardUseCase:
     def execute(self, award: AwardDomain):
         name_exist = self.repository.get_by_name(award.name)
         if name_exist is not None:
-            return False, {"error": "El nombre del premio ya está en uso."}
+            return False, {"error": "Award already exists"}
         try:
             self.repository.save(award)
             return True, award

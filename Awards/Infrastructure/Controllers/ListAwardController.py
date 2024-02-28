@@ -8,6 +8,9 @@ def initialize_endpoints(award_repo):
 
     @get_list_awards_blueprint.route('/', methods=['GET'])
     def get_list_awards():
-        awards = listAwardsUseCase.execute()
-        awards = [award.to_dict() for award in awards]
-        return jsonify(awards), 200
+        try:
+            awards = listAwardsUseCase.execute()
+            awards = [award.to_dict() for award in awards]
+            return jsonify(awards), 200
+        except Exception as e:
+            return jsonify({"message": "Error getting awards", "error": str(e)}), 400

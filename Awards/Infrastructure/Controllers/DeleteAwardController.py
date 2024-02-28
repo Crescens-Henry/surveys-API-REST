@@ -8,5 +8,8 @@ def initialize_endpoints(repository):
 
     @delete_award_blueprint.route('/<int:id>', methods=['DELETE'])
     def delete_award(id):
-        deleteAwardUseCase.execute(id)
-        return jsonify({'message': 'Award deleted'}), 200
+        try:
+            deleteAwardUseCase.execute(id)
+            return jsonify({'message': 'Award deleted'}), 200
+        except Exception as e:
+            return jsonify({"message": "Error deleting award", "error": str(e)}), 400

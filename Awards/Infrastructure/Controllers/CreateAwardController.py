@@ -9,11 +9,13 @@ def initialize_endpoints(repository):
 
     @create_award_blueprint.route('/', methods=['POST'])
     def create_award():
-        award_data = request.get_json()
-        
-        success, result = create_award_use_case.execute(AAward(**award_data))
-        
-        if success:
-            return jsonify({"message": "Award created", "award": result}), 200
-        else:
-            return jsonify({"message": "Error creating award", "error": result}), 400
+        try:
+            award_data = request.get_json()
+            success, result = create_award_use_case.execute(AAward(**award_data))
+            
+            if success:
+                return jsonify({"message": "Award created", "award": result}), 200
+            else:
+                return jsonify({"message": "Error creating award", "error": result}), 400
+        except Exception as e:
+            return jsonify({"message": "Error creating award", "error": str(e)}), 400
