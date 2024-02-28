@@ -6,7 +6,7 @@ from .Credentials import Credentials
 import uuid
 
 @dataclass
-class User:
+class AUser:
     user_uuid = str(uuid.uuid4())
     contact: Contact
     credentials: Credentials

@@ -7,9 +7,8 @@ from User.Infrastructure.Controllers.DeleteUserController import delete_user_blu
 from User.Infrastructure.Controllers.SignInController import signin_blueprint, initialize_endpoints as initialize_endpoints_signin
 from User.Infrastructure.security.utils import configure_jwt
 
-app = Flask(__name__)
 
-def initialize_app(repositorio):
+def initialize_app(app, repositorio):
     configure_jwt(app)
     initialize_endpoints_signup(repositorio)
     initialize_endpoints_list_users(repositorio)
