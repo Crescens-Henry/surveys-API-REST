@@ -1,6 +1,6 @@
 class ListSurveyUseCase:
-    def __init__(self, surveyRepository):
-        self.surveyRepository = surveyRepository
+    def __init__(self, repository):
+        self.repository = repository
 
     def execute(self):
-        return self.surveyRepository.getAll()
+        return self.repository.list_all()

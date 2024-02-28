@@ -10,7 +10,7 @@ class CreateSurveyUseCase:
         return False, {"error": "it already exists."}
        
        try:
-        
+        self.repository.save(survey)
         return True, survey
        
        except Exception as e:

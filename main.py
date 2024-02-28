@@ -4,6 +4,8 @@ from Awards.Infrastructure.Repositories.MysqlRepository import Repository as Awa
 from Surveys.Infraestructura.Repositories.MysqlRepository import Repository as SurveyRepository
 from Surveys.Infraestructura.Routers.Routes import initialize_app as initialize_app_survey
 
+
+
 from User.Infrastructure.Routes.Routes import initialize_app as initialize_app_user
 from Awards.Infrastructure.Routes.Routes import initialize_app as initialize_app_award
 from flask import Flask

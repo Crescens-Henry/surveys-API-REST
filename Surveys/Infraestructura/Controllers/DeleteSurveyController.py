@@ -8,5 +8,9 @@ def initialize_endpoints(repositorio):
 
     @delete_survey_blueprint.route('/<int:id>', methods=['DELETE'])
     def delete_survey(id):
-        deleteSurveyUseCase.execute(id)
-        return jsonify({'message': 'survey deleted'}), 200
+        try:
+            deleteSurveyUseCase.execute(id)
+            return jsonify({'message': 'survey deleted'}), 200
+        except Exception as e:
+               return jsonify({'message': 'Error deleted',"error": str(e)}), 400
+        

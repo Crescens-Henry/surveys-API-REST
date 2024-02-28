@@ -1,5 +1,5 @@
 from Surveys.Application.GetSurveyUseCase import GetSurveyUseCase
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify
 
 get_survey_blueprint = Blueprint('get_survey', __name__)
 
@@ -8,7 +8,8 @@ def initialize_endpoints(repository):
 
     @get_survey_blueprint.route('/<int:id>', methods=['GET'])
     def get_survey(id):
-        survey = getSurveyUseCase.execute(id)
-        if survey is None:
-             return jsonify({"message": "Error "}), 400
-        return jsonify(survey.to_dict()), 200
+        try:
+            survey = getSurveyUseCase.execute(id)
+            return jsonify(survey.to_dict()), 200
+        except Exception as e:
+            return jsonify({"message": "Error getting survey", "error": str(e)}), 400
