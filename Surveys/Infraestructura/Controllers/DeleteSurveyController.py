@@ -3,7 +3,6 @@ from Surveys.Application.DeleteSurveyUseCase import DeleteSurveyUseCase
 
 delete_survey_blueprint = Blueprint('delete_survey', __name__)
 
-
 def initialize_endpoints(repositorio):
     deleteSurveyUseCase = DeleteSurveyUseCase(repositorio)
 

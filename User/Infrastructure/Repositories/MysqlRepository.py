@@ -1,12 +1,6 @@
 from Database.mysqlConection import DBConnection, UserModel
-<<<<<<< HEAD
-from User.Domain.Entities.AUser import User as UserDomain
-
-class Repositorio:
-=======
 from User.Domain.Entities.AUser import AUser as UserDomain
 class Repository:
->>>>>>> 5255b5df65a73339ed9d0631fff44efa1aeda549
     def __init__(self):
         self.connection = DBConnection()
         self.session = self.connection.Session()

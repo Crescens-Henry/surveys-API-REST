@@ -1,9 +1,17 @@
-from Surveys.Domain.Entity.Asurvey import Asurvey
+from Surveys.Domain.Entities.ASurvey import ASurvey as SurveyDomain 
 
 class CreateSurveyUseCase:
     def __init__(self, repository):
         self.repository = repository
 
-    def create_survey(self, survey: Asurvey):
-       self.repositorio.save(survey)
-       return survey
+    def execute(self, survey: SurveyDomain):
+       title_exist = self.repository.get_by_title(survey.title)
+       if title_exist is not None:
+        return False, {"error": "it already exists."}
+       
+       try:
+        
+        return True, survey
+       
+       except Exception as e:
+        return False, {"error": str(e)}
