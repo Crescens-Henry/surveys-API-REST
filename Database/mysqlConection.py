@@ -29,6 +29,25 @@ class UserModel(Base):
             'password': self.password,
             'user_uuid': self.user_uuid
         }
+
+
+class AwardModel(Base):
+    __tablename__ = 'awards'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    description = Column(String(255), nullable=False)
+    award_uuid = Column(String(36), unique=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'award_uuid': self.award_uuid
+        }
+
+
 class DBConnection:
     def __init__(self):
         load_dotenv()
