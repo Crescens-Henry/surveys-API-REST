@@ -27,7 +27,8 @@ class UserModel(Base):
             'phone': self.phone,
             'email': self.email,
             'password': self.password,
-            'user_uuid': self.user_uuid
+            'user_uuid': self.user_uuid,
+            'type': self.type.value
         }
 
 class SurveyModel(Base):
