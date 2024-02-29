@@ -1,8 +1,8 @@
 from User.Infrastructure.Repositories.MysqlRepository import Repository as UserRepository
 from Awards.Infrastructure.Repositories.MysqlRepository import Repository as AwardRepository
 
-from Surveys.Infraestructura.Repositories.MysqlRepository import Repository as SurveyRepository
-from Surveys.Infraestructura.Routers.Routes import initialize_app as initialize_app_survey
+from Surveys.Infrastructure.Repositories.MysqlRepository import Repository as SurveyRepository
+from Surveys.Infrastructure.Routers.Routes import initialize_app as initialize_app_survey
 
 
 
