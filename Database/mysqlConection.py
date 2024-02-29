@@ -3,10 +3,12 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import os
 from dotenv import load_dotenv
-
 from User.Domain.Entities.UserType import UserType
+from Results.Domain.Entities.Result import ResultUser
+from Results.Domain.Entities.StatusResult import StatusResult
 
 Base = declarative_base()
+
 class UserModel(Base):
     __tablename__ = 'users'
 
@@ -30,6 +32,33 @@ class UserModel(Base):
             'user_uuid': self.user_uuid
         }
 
+class SurveyModel(Base):
+    __tablename__ = 'surveys'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(50), nullable=False)
+    survey_uuid = Column(String(36), unique=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'survey_uuid': self.survey_uuid
+        }
+    
+class AskModel(Base):
+    __tablename__ = 'asks'
+
+    id = Column(Integer, primary_key=True)
+    ask = Column(String(50), nullable=False)
+    ask_uuid = Column(String(36), unique=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'ask': self.ask,
+            'ask_uuid': self.ask_uuid
+        }
 
 class AwardModel(Base):
     __tablename__ = 'awards'
@@ -45,6 +74,20 @@ class AwardModel(Base):
             'name': self.name,
             'description': self.description,
             'award_uuid': self.award_uuid
+        }
+
+class ResultsModel(Base):
+    __tablename__ = 'results'
+
+    id = Column(Integer, primary_key=True)
+    statusResult = Column(Enum(StatusResult))
+    result = Column(Enum(ResultUser))
+    result_uuid =Column(String(36), unique=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'result_uuid': self.result_uuid
         }
 
 
