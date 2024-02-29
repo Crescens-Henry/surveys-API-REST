@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 from Awards.Application.GetAwardUseCase import GetAwardUseCase
 
 get_Award_blueprint = Blueprint('get_award', __name__)
@@ -7,6 +8,7 @@ def initialize_endpoints(repository):
     getAwardUseCase = GetAwardUseCase(repository)
 
     @get_Award_blueprint.route('/<int:id>', methods=['GET'])
+    @jwt_required()
     def get_award(id):
         try:
             award = getAwardUseCase.execute(id)
