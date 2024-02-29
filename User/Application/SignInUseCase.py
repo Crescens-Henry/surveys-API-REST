@@ -1,5 +1,4 @@
-from User.Infrastructure.security.utils import verify_password, create_access_token
-
+from User.Infrastructure.security.utils import verify_password, create_custom_access_token
 class SignInUseCase:
     def __init__(self, repository):
         self.repositorio = repository
@@ -10,5 +9,5 @@ class SignInUseCase:
             return None
         if not verify_password(password, user.password):
             return None
-        access_token = create_access_token(subject=user.email)
+        access_token = create_custom_access_token(subject=user.email, user_role=user.type.value)
         return access_token

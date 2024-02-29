@@ -1,4 +1,4 @@
-from Surveys.Domain.Entities.Ask import Ask as AskDomain 
+from Surveys.Domain.Entities.ask import Ask as AskDomain 
 
 class CreateAskUseCase:
     def __init__(self, repository):
