@@ -1,23 +1,16 @@
 from User.Infrastructure.Repositories.MysqlRepository import Repository as UserRepository
 from Awards.Infrastructure.Repositories.MysqlRepository import Repository as AwardRepository
-<<<<<<< HEAD
-from Surveys.Infraestructura.Repositories.MysqlRepository import Repository as SurveyRepository
-from Surveys.Infraestructura.Repositories.MysqlRepositoryAsk import Repository as AskRepository
 from Results.Infrastructure.Repositories.MysqlRepository import Repository as ResultRepository
 from CorrectResults.Infrastructure.Repositories.MysqlRepository import Repository as CorrectRepository
 
 from CorrectResults.Infrastructure.Routes.Routes import initialize_app as initialize_app_correct
 from Results.Infrastructure.Routes.Routes import initialize_app as initialize_app_result
-from Surveys.Infraestructura.Routers.Routes import initialize_app as initialize_app_survey
-from Surveys.Infraestructura.Routers.RoutesAsk import initialize_app as initialize_app_ask
-=======
 
+from Surveys.Infrastructure.Repositories.MysqlRepositoryAsk import Repository as AskRepository
+from Surveys.Infrastructure.Routers.RoutesAsk import initialize_app as initialize_app_ask
 from Surveys.Infrastructure.Repositories.MysqlRepository import Repository as SurveyRepository
 from Surveys.Infrastructure.Routers.Routes import initialize_app as initialize_app_survey
 
-
-
->>>>>>> 1b65478739c2ad67e785a408ea4dad678366410e
 from User.Infrastructure.Routes.Routes import initialize_app as initialize_app_user
 from Awards.Infrastructure.Routes.Routes import initialize_app as initialize_app_award
 

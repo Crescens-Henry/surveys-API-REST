@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from Surveys.Application.CreateAskUseCase import CreateAskUseCase
-from Surveys.Domain.Entities.ask import Ask
+from Surveys.Domain.Entities.Ask import Ask
 
 
 create_ask_blueprint = Blueprint('create_ask', __name__)
