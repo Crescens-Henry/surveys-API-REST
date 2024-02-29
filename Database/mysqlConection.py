@@ -4,8 +4,10 @@ from sqlalchemy.ext.declarative import declarative_base
 import os
 from dotenv import load_dotenv
 from User.Domain.Entities.UserType import UserType
-from Results.Domain.Entities.Result import ResultUser
+from Results.Domain.Entities.Result import Result
 from Results.Domain.Entities.StatusResult import StatusResult
+from CorrectResults.Domain.Entities.Type_status import Type_status
+
 
 Base = declarative_base()
 
@@ -81,15 +83,31 @@ class ResultsModel(Base):
 
     id = Column(Integer, primary_key=True)
     statusResult = Column(Enum(StatusResult))
-    result = Column(Enum(ResultUser))
+    result = Column(Enum(Result))
     result_uuid =Column(String(36), unique=True)
 
     def to_dict(self):
         return {
             'id': self.id,
+            'statusResult' : str (self.statusResult),
+            'result' : str (self.result),
             'result_uuid': self.result_uuid
         }
+    
 
+class CorrectResultsModel(Base):
+    __tablename__ = 'CorrectResults'
+
+    id = Column(Integer, primary_key=True)
+    valueRes = Column(Enum(Type_status))
+    correctResults_uuid =Column(String(36), unique=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'valueRes' : str (self.valueRes),
+            'correctResults_uuid': self.correctResults_uuid
+        }
 
 class DBConnection:
     def __init__(self):
