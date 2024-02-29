@@ -1,6 +1,6 @@
 from Database.mysqlConection import DBConnection, SurveyModel, AskModel
 from Surveys.Domain.Entities.ASurvey import ASurvey as SurveyDomain
-from Surveys.Domain.Entities.Ask import Ask as AskDomain
+from Surveys.Domain.Entities.ask import Ask as AskDomain
 
 class Repository:
     def __init__(self):
