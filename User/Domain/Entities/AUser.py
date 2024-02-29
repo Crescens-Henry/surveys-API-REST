@@ -7,7 +7,7 @@ import uuid
 
 @dataclass
 class AUser:
-    user_uuid :str = field(default_factory=uuid.uuid4, init=False)
+    user_uuid: str = field(default_factory=uuid.uuid4, init=False)
     contact: Contact
     credentials: Credentials
     type: UserType
