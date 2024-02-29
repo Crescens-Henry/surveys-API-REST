@@ -1,8 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import uuid
 
 @dataclass
 class AAward:
-    award_uuid  = str(uuid.uuid4())
+    award_uuid :str = field(default_factory=lambda: str(uuid.uuid4()))
     name : str
     description : str
