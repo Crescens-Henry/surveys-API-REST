@@ -1,7 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import uuid
 
 @dataclass
-class ask:
-    ask_uuid = str(uuid.uuid4())
-    pregunta: str
+class Ask:
+    ask: str
+    ask_uuid: str = field(default_factory=lambda: str(uuid.uuid4()))
+    

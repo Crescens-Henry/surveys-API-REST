@@ -3,7 +3,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import os
 from dotenv import load_dotenv
-
 from User.Domain.Entities.UserType import UserType
 
 Base = declarative_base()
@@ -44,6 +43,20 @@ class SurveyModel(Base):
             'title': self.title,
             'survey_uuid': self.survey_uuid
         }
+    
+class AskModel(Base):
+    __tablename__ = 'asks'
+
+    id = Column(Integer, primary_key=True)
+    ask = Column(String(50), nullable=False)
+    ask_uuid = Column(String(36), unique=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'ask': self.ask,
+            'ask_uuid': self.ask_uuid
+        }
 
 class AwardModel(Base):
     __tablename__ = 'awards'
@@ -60,6 +73,7 @@ class AwardModel(Base):
             'description': self.description,
             'award_uuid': self.award_uuid
         }
+
 
 
 class DBConnection:
