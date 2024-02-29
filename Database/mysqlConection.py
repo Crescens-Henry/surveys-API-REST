@@ -4,6 +4,8 @@ from sqlalchemy.ext.declarative import declarative_base
 import os
 from dotenv import load_dotenv
 from User.Domain.Entities.UserType import UserType
+from Results.Domain.Entities.Result import ResultUser
+from Results.Domain.Entities.StatusResult import StatusResult
 
 Base = declarative_base()
 
@@ -74,6 +76,19 @@ class AwardModel(Base):
             'award_uuid': self.award_uuid
         }
 
+class ResultsModel(Base):
+    __tablename__ = 'results'
+
+    id = Column(Integer, primary_key=True)
+    statusResult = Column(Enum(StatusResult))
+    result = Column(Enum(ResultUser))
+    result_uuid =Column(String(36), unique=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'result_uuid': self.result_uuid
+        }
 
 
 class DBConnection:
