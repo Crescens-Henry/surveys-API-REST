@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify
 from Results.Application.ListResultUseCase import ListResultUseCase
 
 get_list_result_blueprint = Blueprint('get_list_results', __name__)

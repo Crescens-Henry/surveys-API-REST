@@ -1,6 +1,7 @@
-from Database.mysqlConection import DBConnection, ResultsModel
+
 from Results.Domain.Entities.AResult import AResult as ResultDomain
 from Results.Domain.Entities.Result import Result
+from Database.mysqlConection import DBConnection, ResultsModel, AskModel
 
 class Repository:
     def __init__(self):
@@ -9,17 +10,17 @@ class Repository:
         
     def save(self, result_domain: ResultDomain):
         result = ResultsModel(
-            result=result_domain.result,
-            statusResult=result_domain.statusResult,
-            result_uuid=result_domain.result_uuid
+            valorUno=result_domain.valorUno,
+            valorDos=result_domain.valorDos,
+            result_uuid=result_domain.result_uuid,
+            ask_uuid=result_domain.ask_uuid  # Agregar el ask_uuid al guardar el resultado
         )
         self.session.add(result)
         self.session.commit()
         return result
 
     def list_all(self):
-        result = self.session.query(ResultsModel).all()
-        return result
+        return self.session.query(ResultsModel).all()
     
     def get_by_id(self, id):
         return self.session.query(ResultsModel).filter(ResultsModel.id == id).first()
@@ -27,7 +28,6 @@ class Repository:
     def update(self, id, result_data):
         result = self.get_by_id(id)
         result.result = Result[result_data['result']]
-        result.statusResult = result_data['statusResult']
         self.session.commit()
         return result
     
@@ -36,3 +36,7 @@ class Repository:
         self.session.delete(result)
         self.session.commit()
         return result
+    
+    # Método para buscar una pregunta por su ask_uuid
+    def get_ask_by_uuid(self, ask_uuid):
+        return self.session.query(AskModel).filter(AskModel.ask_uuid == ask_uuid).first()

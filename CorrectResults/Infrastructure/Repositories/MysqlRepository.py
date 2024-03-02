@@ -9,8 +9,12 @@ class Repository:
         
     def save(self, correct_domain: CorrectResultDomain):
         correct = CorrectResultsModel(
-            valueRes=correct_domain.valueRes,
-            correctResults_uuid=correct_domain.correctResults_uuid
+            valorUno=correct_domain.valorUno,
+            valorDos=correct_domain.valorDos,
+            valueUno=correct_domain.valueUno,
+            valueDos=correct_domain.valueDos,
+            correctResults_uuid=correct_domain.correctResults_uuid,
+            ask_uuid=correct_domain.ask_uuid  # Asegúrate de incluir el ask_uuid aquí
         )
         self.session.add(correct)
         self.session.commit()
@@ -25,7 +29,10 @@ class Repository:
     
     def update(self, id, correct_data):
         correct = self.get_by_id(id)
-        correct.valueRes = Type_status[correct_data['valueRes']]
+        correct.valorUno = correct_data['valorUno']
+        correct.valorDos = correct_data['valorDos']
+        correct.valueUno = Type_status[correct_data['valueUno']]
+        correct.valueDos = Type_status[correct_data['valueDos']]
         self.session.commit()
         return correct
     

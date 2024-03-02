@@ -5,7 +5,6 @@ class CreateAskUseCase:
         self.repository = repository
 
     def execute(self, ask: AskDomain):
-      
        try:
         self.repository.save_ask(ask)
         return True, ask

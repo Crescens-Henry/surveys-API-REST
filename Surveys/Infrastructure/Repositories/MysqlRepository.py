@@ -1,11 +1,15 @@
-from Database.mysqlConection import DBConnection, SurveyModel
+from Database.mysqlConection import DBConnection, SurveyModel, AskModel
 from Surveys.Domain.Entities.ASurvey import ASurvey as SurveyDomain
+from Surveys.Infrastructure.Repositories.MysqlRepositoryAsk import  Repository as AskRepository
+
 
 class Repository:
     def __init__(self):
         self.connection = DBConnection()
         self.session = self.connection.Session()
-        
+    def repositoryA():
+        AskRepository
+    
     def save(self, survey_domain: SurveyDomain):
         survey = SurveyModel(
             title=survey_domain.title,
