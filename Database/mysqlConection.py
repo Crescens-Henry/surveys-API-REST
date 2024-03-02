@@ -4,6 +4,11 @@ from sqlalchemy.ext.declarative import declarative_base
 import os
 from dotenv import load_dotenv
 from User.Domain.Entities.UserType import UserType
+from Results.Domain.Entities.Result import Result
+from CorrectResults.Domain.Entities.Type_status import Type_status
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
+
 
 Base = declarative_base()
 
@@ -31,6 +36,7 @@ class UserModel(Base):
             'type': self.type.value
         }
 
+
 class SurveyModel(Base):
     __tablename__ = 'surveys'
 
@@ -38,25 +44,14 @@ class SurveyModel(Base):
     title = Column(String(50), nullable=False)
     survey_uuid = Column(String(36), unique=True)
 
+    asks = relationship("AskModel", back_populates="survey")  # Relación con las preguntas
+
     def to_dict(self):
         return {
             'id': self.id,
             'title': self.title,
-            'survey_uuid': self.survey_uuid
-        }
-    
-class AskModel(Base):
-    __tablename__ = 'asks'
-
-    id = Column(Integer, primary_key=True)
-    ask = Column(String(50), nullable=False)
-    ask_uuid = Column(String(36), unique=True)
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'ask': self.ask,
-            'ask_uuid': self.ask_uuid
+            'survey_uuid': self.survey_uuid,
+            'asks': [ask.to_dict() for ask in self.asks]
         }
 
 class AwardModel(Base):
@@ -74,6 +69,73 @@ class AwardModel(Base):
             'description': self.description,
             'award_uuid': self.award_uuid
         }
+
+class ResultsModel(Base):
+    __tablename__ = 'results'
+
+    id = Column(Integer, primary_key=True)
+    result_uuid = Column(String(36), unique=True)
+    valorUno = Column(String(50), nullable=False)
+    valorDos = Column(String(50), nullable=False)
+    ask_uuid = Column(String(36), ForeignKey('asks.ask_uuid'))  # Agregar esta línea para definir la columna ask_uuid
+    ask = relationship("AskModel", back_populates="result")  # Definir la relación
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'valorUno': self.valorUno,
+            'valorDos': self.valorDos,
+            'result_uuid': self.result_uuid,
+        }
+    
+class AskModel(Base):
+    __tablename__ = 'asks'
+    id = Column(Integer, primary_key=True)
+    ask = Column(String(50), nullable=False)
+    ask_uuid = Column(String(36), unique=True)
+    survey_uuid = Column(String(36), ForeignKey('surveys.survey_uuid'), nullable=False)
+
+    survey = relationship("SurveyModel", back_populates="asks")  # Relación inversa
+    # Relación uno a uno con CorrectResultsModel usando UUID
+    correct_result = relationship("CorrectResultsModel", uselist=False, back_populates="ask")
+    # Agregar relación uno a uno con ResultsModel usando UUID
+    result = relationship("ResultsModel", uselist=False, back_populates="ask")
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'ask': self.ask,
+            'ask_uuid': self.ask_uuid,
+            'survey_uuid': self.survey_uuid,
+            'correct_result': self.correct_result.to_dict() if self.correct_result else None,  # Convertir la respuesta correcta a un diccionario si existe
+            'result': self.result.to_dict() if self.result else None  # Convertir el resultado asociado a un diccionario si existe
+        }
+    
+class CorrectResultsModel(Base):
+    __tablename__ = 'CorrectResults'
+    id = Column(Integer, primary_key=True)
+    valorUno = Column(String(50), nullable=False)
+    valorDos = Column(String(50), nullable=False)
+    valueDos = Column(Enum(Type_status))
+    valueUno = Column(Enum(Type_status))
+    correctResults_uuid = Column(String(36), unique=True)
+    
+    # Definir relación uno a uno con AskModel usando UUID
+    ask_uuid = Column(String(36), ForeignKey('asks.ask_uuid'), unique=True)
+    ask = relationship("AskModel", back_populates="correct_result")
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'valorUno': self.valorUno,
+            'valorDos': self.valorDos,
+            'valueUno': self.valueUno.value,
+            'valueDos': self.valueDos.value,
+            'correctResults_uuid': self.correctResults_uuid
+        }
+
+
+
 
 class DBConnection:
     def __init__(self):
