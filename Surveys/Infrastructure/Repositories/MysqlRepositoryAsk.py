@@ -10,10 +10,12 @@ class Repository:
         ask = AskModel(
             ask=ask_domain.ask,
             ask_uuid=ask_domain.ask_uuid,
+            survey_uuid=ask_domain.survey_uuid  # Asignar el ID de la encuesta asociada
         )
         self.session.add(ask)
         self.session.commit()
         return ask
+
     
     def get_by_ask(self, ask):
         return self.session.query(AskModel).filter(AskModel.ask == ask).first()

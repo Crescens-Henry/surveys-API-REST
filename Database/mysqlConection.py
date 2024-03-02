@@ -7,6 +7,8 @@ from User.Domain.Entities.UserType import UserType
 from Results.Domain.Entities.Result import Result
 from Results.Domain.Entities.StatusResult import StatusResult
 from CorrectResults.Domain.Entities.Type_status import Type_status
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 
 
 Base = declarative_base()
@@ -35,6 +37,7 @@ class UserModel(Base):
             'type': self.type.value
         }
 
+
 class SurveyModel(Base):
     __tablename__ = 'surveys'
 
@@ -42,25 +45,14 @@ class SurveyModel(Base):
     title = Column(String(50), nullable=False)
     survey_uuid = Column(String(36), unique=True)
 
+    asks = relationship("AskModel", back_populates="survey")  # Relación con las preguntas
+
     def to_dict(self):
         return {
             'id': self.id,
             'title': self.title,
-            'survey_uuid': self.survey_uuid
-        }
-    
-class AskModel(Base):
-    __tablename__ = 'asks'
-
-    id = Column(Integer, primary_key=True)
-    ask = Column(String(50), nullable=False)
-    ask_uuid = Column(String(36), unique=True)
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'ask': self.ask,
-            'ask_uuid': self.ask_uuid
+            'survey_uuid': self.survey_uuid,
+            'asks': [ask.to_dict() for ask in self.asks]
         }
 
 class AwardModel(Base):
@@ -98,7 +90,6 @@ class ResultsModel(Base):
 
 class CorrectResultsModel(Base):
     __tablename__ = 'CorrectResults'
-
     id = Column(Integer, primary_key=True)
     valueRes = Column(Enum(Type_status))
     correctResults_uuid =Column(String(36), unique=True)
@@ -107,8 +98,26 @@ class CorrectResultsModel(Base):
         return {
             'id': self.id,
             'valueRes' : str (self.valueRes),
-            'correctResults_uuid': self.correctResults_uuid
+            
         }
+
+class AskModel(Base):
+    __tablename__ = 'asks'
+    id = Column(Integer, primary_key=True)
+    ask = Column(String(50), nullable=False)
+    ask_uuid = Column(String(36), unique=True)
+    survey_uuid = Column(String(36), ForeignKey('surveys.survey_uuid'), nullable=False)
+
+    survey = relationship("SurveyModel", back_populates="asks")  # Relación inversa
+   
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'ask': self.ask,
+            'ask_uuid': self.ask_uuid,
+            'survey_uuid': self.survey_uuid
+        }
+
 
 class DBConnection:
     def __init__(self):
